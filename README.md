@@ -9,8 +9,8 @@ Unfortunately, they decided to move on to start their own company and we're now 
 That's where you come in.
 
 ## How to get started
-1. Download this repository and run index.html in your web-browser.
-2. Or [click on this link](https://tpalee.github.io/Udacity-Feedreader-testing/)
+Download this repository and run index.html in your web-browser.
+
 
 ## Information I used as a reference for completing this project
 * Google-searches (mostly ending at stackoverflow.com)
