@@ -23,7 +23,7 @@ $(function() {
      */
     it('are defined', function() {
         expect(allFeeds).toBeDefined();
-        expect(allFeeds.length).not.toBe(0
+        expect(allFeeds.length).not.toBe(0);
     });
 
     /* TODO: Write a test that loops through each feed
