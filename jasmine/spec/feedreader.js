@@ -1,35 +1,16 @@
-/* feedreader.js
- *
- * This is the spec file that Jasmine will read and contains
- * all of the tests that will be run against your application.
- */
-
-/* We're placing all of our tests within the $() function,
- * since some of these tests may require DOM elements. We want
- * to ensure they don't run until the DOM is ready.
- */
+//Wait until the DOM is ready
 $(function() {
-  /* This is our first test suite - a test suite just contains
-  * a related set of tests. This suite is all about the RSS
-  * feeds definitions, the allFeeds variable in our application.
-  */
+
+  //First test suite contains tests about the allFeeds variable
   describe('RSS Feeds', function() {
-    /* This is our first test - it tests to make sure that the
-     * allFeeds variable has been defined and that it is not
-     * empty. Experiment with this before you get started on
-     * the rest of this project. What happens when you change
-     * allFeeds in app.js to be an empty array and refresh the
-     * page?
-     */
+
+    //test if allFeeds is defined and that it is not empty
     it('are defined', function() {
         expect(allFeeds).toBeDefined();
         expect(allFeeds.length).not.toBe(0);
     });
 
-    /* TODO: Write a test that loops through each feed
-     * in the allFeeds object and ensures it has a URL defined
-     * and that the URL is not empty.
-     */
+    //test if each feed has an url defined which is not empty
     it('should have a non-empty url', function() {
       for(let i in allFeeds){
         expect(allFeeds[i].url).toBeDefined();
@@ -37,90 +18,73 @@ $(function() {
         }
     });
 
-    /* TODO: Write a test that loops through each feed
-     * in the allFeeds object and ensures it has a name defined
-     * and that the name is not empty.
-     */
+    //test if each feed has a name defined which is not empty
     it('should have a non-empty name', function() {
       for(let i in allFeeds){
         expect(allFeeds[i].name).toBeDefined();
-        expect(allFeeds[i].url.name).not.toBe(0);
+        expect(allFeeds[i].name.length).not.toBe(0);
         }
     });
   });//end 'RSS Feeds'
 
 
-  /* TODO: Write a new test suite named "The menu" */
+
+  //Second test suite contains tests about the visibility of the menu
   describe('The menu', function() {
-    /* TODO: Write a test that ensures the menu element is
-     * hidden by default. You'll have to analyze the HTML and
-     * the CSS to determine how we're performing the
-     * hiding/showing of the menu element.
-     */
+
+    //test is the menu is not visible by default
     it ('should be hidden by default', function(){
-      expect(document.body.className).toBe('menu-hidden');
+      expect($(document.body).hasClass("menu-hidden")).toBe(true);
     })
-    /* TODO: Write a test that ensures the menu changes
-    * visibility when the menu icon is clicked. This test
-    * should have two expectations: does the menu display when
-    * clicked and does it hide when clicked again.
-    */
+
+    //test if the menu dis-/appears when clicked
     it('should change visibility when clicked', function(){
       const menuIcon=document.querySelector('.menu-icon-link');
-      //triggerFunction clicks the menuIcon(x)times
-      const triggerFunction=function(x){
-        for(let i=0; i<x; i++){
-          $(menuIcon).trigger('click');
-        }
-      }
-      //menuIcon is clicked twice(even)
-      triggerFunction(2);
-      expect(document.body.className).toBe('menu-hidden');
-      //menuIcon is clicked three times more(odd)
-      triggerFunction(3);
-      expect(document.body.className).not.toBe('menu-hidden');
+      //first "click" should show the menu
+      $(menuIcon).trigger('click');
+      expect($(document.body).hasClass("menu-hidden")).toBe(false);
+      //second "click" should hide the menu
+      $(menuIcon).trigger('click');
+      expect($(document.body).hasClass("menu-hidden")).toBe(true);
     })
   })//end 'The menu'
 
-  /* TODO: Write a new test suite named "Initial Entries" */
+
+
+  //Third test suite contains a test about loading the entries
   describe('Initial Entries', function() {
-    /* TODO: Write a test that ensures when the loadFeed
-     * function is called and completes its work, there is at least
-     * a single .entry element within the .feed container.
-     * Remember, loadFeed() is asynchronous so this test will require
-     * the use of Jasmine's beforeEach and asynchronous done() function.
-     */
+    //loads the feeds and waits until it's done
     beforeEach(function(done){
       loadFeed(0, function(){
       done();
       });
     })
 
+    //test if at least 1 entry is loaded
     it('should have at least a single .entry within the .feed container',function(done){
-      expect(document.querySelector('.entry')).not.toBe(0);
+      expect($('.feed .entry').length).toBeGreaterThan(0)
       done();
     })
   })//end Initial entries
 
 
-  /* TODO: Write a new test suite named "New Feed Selection" */
+
+  //fourth test suite contains a test about loading different feeds
   describe('New Feed Selection', function(){
-    /* TODO: Write a test that ensures when a new feed is loaded
-    * by the loadFeed function that the content actually changes.
-    * Remember, loadFeed() is asynchronous.
-    */
     var content1;
     var content2;
-    beforeEach(function(done){
-      loadFeed(0,  function (){
-        content1=document.querySelector('.entry-link').innerHTML;
+    //Loads 2 feeds which  are stored in the 2 variables;
+    beforeEach(function(done) {
+      loadFeed(0, function() {
+        content1 = $('.feed').html();
+        loadFeed(1, function() {
+          content2 = $('.feed').html();
+          done();
+        })
       })
-      loadFeed(1,  function (){
-        content2=document.querySelector('.entry-link').innerHTML;
-      done()
-      })
-    })//end BeforeEach
+    })//end beforeEach
 
+    //test if loaded content is defined and differs from each other
     it('should load entries with different content', function(done){
       expect(content1).toBeDefined();
       expect(content2).toBeDefined();
